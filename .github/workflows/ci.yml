@@ -24,11 +24,11 @@ jobs:
           echo ::set-output name=package_name::${{ env.package_name }}
 
       -
-        name: Check out the repository
-        uses: actions/checkout@v2
-
-      -
         name: Upload artifact
         run: |
           echo "%APPDATA%"
           echo %APPDATA%
+          cd "%APPDATA%"
+          cd
+        shell:
+          cmd
