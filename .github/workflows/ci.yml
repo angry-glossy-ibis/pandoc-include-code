@@ -28,9 +28,7 @@ jobs:
         name: Upload artifact
         run: |
           echo "%APPDATA%\local\bin"
-          echo ${{ needs.windows.outputs.filename }}
-          echo ${{ needs.windows.outputs.package_name }}
-          echo "${{ needs.windows.outputs.filename }}"
-          echo "${{ needs.windows.outputs.package_name }}"
+          echo %GITHUB_REF%
+          echo ${GITHUB_REF}
         shell:
           cmd
