@@ -13,26 +13,22 @@ jobs:
     runs-on: windows-2019
 
     steps:
-
-      -
-        name: Check out the repository
-        uses: actions/checkout@v2
-
       -
         name: Initialize variables
         id: vars
-        shell:
-          cmd
         # package_name is the name from the .cabal file.
+#          x="%GITHUB_REF:*refs/tags/v=%"
         run:
           echo "::set-output name=package_name::pandoc-include-code"
-          echo "::set-output name=filename::pandoc-include-code-%x%-pandoc-2.11-windows"
-
+          echo "::set-output name=filename::pandoc-include-code-$x-pandoc-2.11-windows"
 
       -
         name: Upload artifact
         shell:
           cmd
+#          mkdir ${{ steps.vars.outputs.bindir }}
+#          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
+#          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
         run: |
           mkdir %APPDATA%\local\bin
           echo Azaza > %APPDATA%\local\bin\${{ steps.vars.outputs.package_name }}
@@ -73,6 +69,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           asset_content_type: text/html
-          asset_name: ${{ steps.vars.outputs.filename }}
+          asset_name: pandoc-include-code-${{ github.ref }}-pandoc-2.11-windows
           asset_path: ${{ steps.vars.outputs.package_name }}
           upload_url: ${{ steps.create_release.outputs.upload_url }}
