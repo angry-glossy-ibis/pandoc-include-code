@@ -29,6 +29,7 @@ jobs:
         run: |
           mkdir ${{ steps.vars.outputs.bindir }}
           echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}.txt
+          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}.txt
 
       -
         name: Upload artifact
