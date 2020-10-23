@@ -16,9 +16,9 @@ jobs:
       -
         name: Initialize variables
         id: vars
+        # The name from the .cabal file:
         run:
           echo "::set-output name=bindir::%APPDATA%\local\bin"
-          # The name from the .cabal file:
           echo "::set-output name=package_name::pandoc-include-code"
           echo "::set-output name=filename::pandoc-include-code-%GITHUB_REF:*refs/tags/v=%-pandoc-2.11-windows"
 
