@@ -20,7 +20,7 @@ jobs:
         run:
           echo "::set-output name=bindir::%APPDATA%\local\bin"
           echo "::set-output name=package_name::pandoc-include-code"
-          echo "::set-output name=filename::pandoc-include-code-%GITHUB_REF:*refs/tags/v=%-pandoc-2.11-windows"
+          echo "::set-output name=filename::pandoc-include-code-%GITHUB_REF:*refs/tags/v=%-pandoc-2.11-windows.txt"
 
       -
         name: Upload artifact
@@ -31,18 +31,17 @@ jobs:
 #          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
         run: |
           mkdir ${{ steps.vars.outputs.bindir }}
-          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
-          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
-          move /Y ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }} ${{ steps.vars.outputs.package_name }}
+          echo Azaza > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.filename }}
+          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.filename }}
+          move /Y ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.filename }} ${{ steps.vars.outputs.filename }}
 
       -
         name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           if-no-files-found: error
-          name: ${{ steps.vars.outputs.package_name }}
-#          path: ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
-          path: ${{ steps.vars.outputs.package_name }}
+          name: ${{ steps.vars.outputs.filename }}
+          path: ${{ steps.vars.outputs.filename }}
 
       -
         name: Create release
@@ -60,7 +59,7 @@ jobs:
         name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: ${{ steps.vars.outputs.package_name }}
+          name: ${{ steps.vars.outputs.filename }}
 
       -
         name: Upload release asset
@@ -70,6 +69,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           asset_content_type: text/html
-          asset_name: ${{ steps.vars.outputs.filename }}.exe
-          asset_path: ${{ steps.vars.outputs.package_name }}.exe
+          asset_name: ${{ steps.vars.outputs.filename }}
+          asset_path: ${{ steps.vars.outputs.filename }}
           upload_url: ${{ steps.create_release.outputs.upload_url }}
