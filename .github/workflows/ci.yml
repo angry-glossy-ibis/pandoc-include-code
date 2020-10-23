@@ -35,8 +35,9 @@ jobs:
         name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
+          if-no-files-found: error
           name: ${{ steps.vars.outputs.package_name }}
-          path: ${{ steps.vars.outputs.bindir }}
+          path: ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
 
       -
         name: Create release
