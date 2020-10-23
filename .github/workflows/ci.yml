@@ -28,15 +28,15 @@ jobs:
           cmd
         run: |
           mkdir ${{ steps.vars.outputs.bindir }}
-          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}.txt
-          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}.txt
+          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
+          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
 
       -
         name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.vars.outputs.package_name }}.txt
-          path: ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}.txt
+          name: ${{ steps.vars.outputs.package_name }}
+          path: ${{ steps.vars.outputs.bindir }}
 
       -
         name: Create release
@@ -54,7 +54,7 @@ jobs:
         name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: ${{ steps.vars.outputs.package_name }}.txt
+          name: ${{ steps.vars.outputs.package_name }}
 
       -
         name: Upload release asset
