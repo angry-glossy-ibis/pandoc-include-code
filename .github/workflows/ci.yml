@@ -26,11 +26,11 @@ jobs:
           echo "::set-output name=package_name::pandoc-include-code"
           echo %GITHUB_REF%
           echo "::set-output name=filename::pandoc-include-code-%x%-pandoc-2.11-windows"
+        shell:
+          cmd
 
       -
         name: Upload artifact
-        shell:
-          cmd
 #          mkdir ${{ steps.vars.outputs.bindir }}
 #          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
 #          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
@@ -39,6 +39,8 @@ jobs:
           echo Azaza > %APPDATA%\local\bin\${{ steps.vars.outputs.package_name }}
           more %APPDATA%\local\bin\${{ steps.vars.outputs.package_name }}
           move /Y %APPDATA%\local\bin\${{ steps.vars.outputs.package_name }} ${{ steps.vars.outputs.package_name }}
+        shell:
+          cmd
 
       -
         name: Upload artifact
