@@ -20,7 +20,7 @@ jobs:
         run:
           echo "::set-output name=package_name::pandoc-include-code"
           x="%GITHUB_REF:*refs/tags/v=%"
-          echo "::set-output name=filename::pandoc-include-code-$x-pandoc-2.11-windows"
+          echo "::set-output name=filename::pandoc-include-code-%x%-pandoc-2.11-windows"
 
       -
         name: Upload artifact
