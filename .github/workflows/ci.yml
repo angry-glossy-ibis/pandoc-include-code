@@ -14,21 +14,18 @@ jobs:
     steps:
       -
         name: Initialize variables
-        env:
-          # The name from the .cabal file.
-          package_name: pandoc-include-code
-          package_version: ${GITHUB_REF/refs\/tags\/v}
         id: vars
+        # The name from the .cabal file.
         run: |
-          echo ::set-output name=filename::${{ env.package_name }}-${{ env.package_version }}-pandoc-2.11-windows
-          echo ::set-output name=package_name::${{ env.package_name }}
+          echo ::set-output name=filename::pandoc-include-code-${GITHUB_REF/refs\/tags\/v}-pandoc-2.11-windows
+          echo ::set-output name=package_name::pandoc-include-code
 
       -
         name: Upload artifact
         run: |
-          echo "%APPDATA%"
-          echo %APPDATA%
-          cd "%APPDATA%"
-          cd
+          echo "%APPDATA%\local\bin"
+          echo ${{ steps.vars.outputs.package_name }}
+          echo "${{ steps.vars.outputs.package_name }}"
+          echo "${{ steps.vars.outputs.filename }}"
         shell:
           cmd
