@@ -1,0 +1,88 @@
+name: Haskell CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set variables
+        id: vars
+        run: |
+          echo ::set-output name=bindir::~/.cabal/bin
+          echo ::set-output name=filename::pandoc-include-code
+
+      -
+        uses: actions/checkout@v2
+
+      -
+        uses: actions/setup-haskell@v1
+        with:
+          ghc-version: '8.10.1'
+          cabal-version: '3.2'
+
+      -
+        name: Cache
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-cabal
+        with:
+          path: ~/.cabal
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      -
+        name: Install dependencies
+        run: |
+          cabal v2-update
+          cabal v2-build --only-dependencies --enable-tests --enable-benchmarks
+
+      -
+        name: Build
+        run: |
+          cabal v2-build --enable-tests --enable-benchmarks all
+
+      -
+        name: Run tests
+        run: |
+          cabal v2-test all
+
+      -
+        name: Run tests
+        run: |
+          cabal v1-install
+          cd ${{ steps.vars.outputs.bindir }}
+          tar -cf - ${{ steps.vars.outputs.filename }} \
+          | gzip -9 - > ${{ steps.vars.outputs.filename }}.tar.gz
+
+      -
+        name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ github.ref }}
+          tag_name: ${{ github.ref }}
+
+      -
+        name: Upload release asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1
+        with:
+          asset_content_type: application/gzip
+          asset_name: ${{ steps.vars.outputs.filename }}.tar.gz
+          asset_path: ${{ steps.vars.outputs.bindir }}/${{ steps.vars.outputs.filename }}.tar.gz
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
