@@ -12,30 +12,31 @@ jobs:
   windows:
     runs-on: windows-2019
 
+    env:
+        
+
     steps:
       -
         name: Initialize variables
-        env:
-          GHHH: "%GITHUB_REF:*refs/tags/v=%"
         id: vars
         # package_name is the name from the .cabal file.
         run:
-          echo "::set-output name=bindir::%APPDATA%\local\bin"
-          echo "::set-output name=filename::pandoc-include-code-%GHHH%-pandoc-2.11-windows"
           echo "::set-output name=package_name::pandoc-include-code"
 
       -
         name: Upload artifact
+        env:
+          
         shell:
           cmd
 #          mkdir ${{ steps.vars.outputs.bindir }}
 #          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
 #          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
         run: |
-          mkdir ${{ steps.vars.outputs.bindir }}
-          echo Azaza > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
-          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
-          move /Y ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }} ${{ steps.vars.outputs.package_name }}
+          mkdir %APPDATA%\local\bin
+          echo Azaza > %APPDATA%\local\bin\${{ steps.vars.outputs.package_name }}
+          more %APPDATA%\local\bin\${{ steps.vars.outputs.package_name }}
+          move /Y %APPDATA%\local\bin\${{ steps.vars.outputs.package_name }} ${{ steps.vars.outputs.package_name }}
 
       -
         name: Upload artifact
@@ -71,6 +72,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           asset_content_type: text/html
-          asset_name: ${{ steps.vars.outputs.filename }}
+          asset_name: "%GITHUB_REF:*refs/tags/v=%"
           asset_path: ${{ steps.vars.outputs.package_name }}
           upload_url: ${{ steps.create_release.outputs.upload_url }}
