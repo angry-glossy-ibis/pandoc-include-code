@@ -69,6 +69,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           asset_content_type: text/html
-          asset_name: pandoc-include-code-${{ github.ref }}-pandoc-2.11-windows
+          asset_name: ${{ steps.vars.outputs.filename }}
           asset_path: ${{ steps.vars.outputs.package_name }}
           upload_url: ${{ steps.create_release.outputs.upload_url }}
