@@ -34,9 +34,10 @@ jobs:
 #          stack test --fast --only-dependencies ${{ steps.vars.outputs.package_name }}
 
       -
-        name: Build and test
+        name: Build, test, install
         run: |
           stack build --test ${{ steps.vars.outputs.package_name }}
+          stack install
 #tar.exe -a -c -f out.zip in.txt
         shell:
           cmd
