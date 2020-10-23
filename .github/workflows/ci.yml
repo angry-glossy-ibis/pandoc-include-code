@@ -22,8 +22,6 @@ jobs:
 
       -
         name: Upload artifact
-        env:
-          
         shell:
           cmd
 #          mkdir ${{ steps.vars.outputs.bindir }}
