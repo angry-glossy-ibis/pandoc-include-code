@@ -30,5 +30,4 @@ jobs:
       -
         name: Upload artifact
         run: |
-          echo ${{ steps.vars.outputs.package_name }}
           echo '%APPDATA%'
