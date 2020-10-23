@@ -31,9 +31,6 @@ jobs:
 
       -
         name: Upload artifact
-#          mkdir ${{ steps.vars.outputs.bindir }}
-#          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
-#          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
         run: |
           mkdir %APPDATA%\local\bin
           echo Azaza > %APPDATA%\local\bin\${{ steps.vars.outputs.package_name }}
