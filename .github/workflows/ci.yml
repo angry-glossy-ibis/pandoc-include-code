@@ -11,6 +11,10 @@ on:
 jobs:
   windows:
     runs-on: windows-2019
+    outputs:
+      filename: ${{ steps.vars.outputs.filename }}
+      package_name: ${{ steps.vars.outputs.package_name }}
+
     steps:
       -
         name: Initialize variables
@@ -22,9 +26,9 @@ jobs:
 
       -
         name: Upload artifact
-        run: |
-          cd "%APPDATA%\local\bin"
-          echo "%GITHUB_REF:*refs/tags/v=%"
-          echo "${{ steps.vars.outputs.filename }}"
         shell:
           cmd
+        run: |
+          echo "%APPDATA%\local\bin"
+          echo "%GITHUB_REF:*/refs/tags/v=%"
+          echo "${{ steps.vars.outputs.filename }}"
