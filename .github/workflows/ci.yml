@@ -27,54 +27,8 @@ jobs:
         name: Check out the repository
         uses: actions/checkout@v2
 
-#      -
-#        name: Install dependencies
-#        run: |
-#          stack update
-#          stack test --fast --only-dependencies ${{ steps.vars.outputs.package_name }}
-
-      -
-        name: Build, test, install
-        run: |
-          stack build --test ${{ steps.vars.outputs.package_name }}
-          stack install
-#tar.exe -a -c -f out.zip in.txt
-        shell:
-          cmd
-
       -
         name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ steps.vars.outputs.package_name }}.exe
-          path: '%APPDATA%\local\bin\${{ steps.vars.outputs.package_name }}.exe'
-
-      -
-        name: Create release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          draft: false
-          prerelease: false
-          release_name: ${{ steps.vars.outputs.package_name }} ${{ github.ref }}
-          tag_name: ${{ github.ref }}
-
-      -
-        name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ steps.vars.outputs.package_name }}.exe
-
-      -
-        name: Upload release asset
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        id: upload_release_asset
-        uses: actions/upload-release-asset@v1
-        with:
-          asset_content_type: application/octet-stream
-          asset_name: ${{ steps.vars.outputs.filename }}.exe
-          asset_path: ${{ steps.vars.outputs.package_name }}.exe
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+        run: |
+          echo ${{ steps.vars.outputs.package_name }}
+          echo '%APPDATA%'
