@@ -19,7 +19,7 @@ jobs:
         # package_name is the name from the .cabal file.
         run:
           echo "::set-output name=bindir::%APPDATA%\local\bin"
-          echo ::set-output name=filename::pandoc-include-code-${GITHUB_REF/refs\/tags\/v}-pandoc-2.11-windows
+          echo ::set-output name=filename::pandoc-include-code-%GITHUB_REF:*refs/tags/v=%-pandoc-2.11-windows
           echo "::set-output name=package_name::pandoc-include-code"
 
       -
