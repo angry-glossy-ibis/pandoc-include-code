@@ -17,11 +17,10 @@ jobs:
         name: Initialize variables
         id: vars
         # package_name is the name from the .cabal file.
-        # %GITHUB_REF:*refs/tags/v=%
         run:
-          echo "::set-output name=bindir::%APPDATA%\local\bin"
-          echo "::set-output name=package_name::pandoc-include-code"
-          echo "::set-output name=filename::pandoc-include-code-${GITHUB_REF/refs\/tags\/v}-pandoc-2.11-windows"
+          echo ::set-output name=bindir::%APPDATA%\local\bin
+          echo ::set-output name=package_name::pandoc-include-code
+          echo ::set-output name=filename::pandoc-include-code-%GITHUB_REF:*refs/tags/v=%-pandoc-2.11-windows
 
       -
         name: Upload artifact
