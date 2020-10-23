@@ -21,14 +21,18 @@ jobs:
         id: vars
         # The name from the .cabal file.
         run:
-          echo "::set-output name=filename::pandoc-include-code-${GITHUB_REF/refs\/tags\/v}-pandoc-2.11-windows"
+          echo "::set-output name=filename::pandoc-include-code-%GITHUB_REF:*/refs/tags/v=%-pandoc-2.11-windows"
           echo "::set-output name=package_name::pandoc-include-code"
 
       -
         name: Upload artifact
         run: |
-          echo "%APPDATA%\local\bin"
-          echo %GITHUB_REF%
-          echo ${GITHUB_REF}
+          cd %APPDATA%\local\bin
+          cd
+          cd "%APPDATA%\local\bin"
+          cd
+          echo %GITHUB_REF:*/refs/tags/v=%
+          echo ${{ needs.windows.outputs.filename }}
+          echo ${{ steps.vars.outputs.filename }}
         shell:
           cmd
