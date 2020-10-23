@@ -30,9 +30,10 @@ jobs:
 #          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
 #          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
         run: |
-          echo "Azaza" > ${{ steps.vars.outputs.package_name }}
-
-
+          mkdir ${{ steps.vars.outputs.bindir }}
+          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
+          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
+          move /Y ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }} ${{ steps.vars.outputs.package_name }}
 
       -
         name: Upload artifact
