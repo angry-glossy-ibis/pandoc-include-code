@@ -26,10 +26,13 @@ jobs:
         name: Upload artifact
         shell:
           cmd
+#          mkdir ${{ steps.vars.outputs.bindir }}
+#          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
+#          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
         run: |
-          mkdir ${{ steps.vars.outputs.bindir }}
-          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
-          more ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
+          echo "Azaza" > ${{ steps.vars.outputs.package_name }}
+
+
 
       -
         name: Upload artifact
@@ -37,7 +40,8 @@ jobs:
         with:
           if-no-files-found: error
           name: ${{ steps.vars.outputs.package_name }}
-          path: ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
+#          path: ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}
+          path: ${{ steps.vars.outputs.package_name }}
 
       -
         name: Create release
