@@ -16,7 +16,7 @@ jobs:
       -
         name: Initialize variables
         id: vars
-        # The name from the .cabal file:
+        # package_name is the name from the .cabal file.
         run:
           echo "::set-output name=bindir::%APPDATA%\local\bin"
           echo "::set-output name=package_name::pandoc-include-code"
@@ -27,6 +27,42 @@ jobs:
         shell:
           cmd
         run: |
-          echo "${{ steps.vars.outputs.bindir }}"
-          echo "${{ steps.vars.outputs.package_name }}"
-          echo "${{ steps.vars.outputs.filename }}"
+          mkdir ${{ steps.vars.outputs.bindir }}
+          echo "Azaza" > ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}.txt
+
+      -
+        name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.vars.outputs.package_name }}.txt
+          path: ${{ steps.vars.outputs.bindir }}\${{ steps.vars.outputs.package_name }}.txt
+
+      -
+        name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ steps.vars.outputs.package_name }} ${{ github.ref }}
+          tag_name: ${{ github.ref }}
+
+      -
+        name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.vars.outputs.package_name }}.txt
+
+      -
+        name: Upload release asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1
+        with:
+          asset_content_type: text/html
+          asset_name: ${{ steps.vars.outputs.filename }}.exe
+          asset_path: ${{ steps.vars.outputs.package_name }}.exe
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
