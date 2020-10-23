@@ -7,7 +7,7 @@ You get to:
 * Keep your examples and documentation compiled and in sync
 * Include small snippets from larger source files without needing to keep
   track of line numbers
-* Dedent included snippets
+* Dedent included snippets1
 
 ## Usage
 
